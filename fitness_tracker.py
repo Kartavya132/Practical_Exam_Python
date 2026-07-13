@@ -1,3 +1,12 @@
+import matplotlib
+
+try:
+    import tkinter  # noqa: F401
+
+    matplotlib.use("TkAgg")
+except Exception:
+    matplotlib.use("Agg")
+
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -104,6 +113,79 @@ class FitnessTracker:
 
         print(f"Data summary:\n{self.__data.describe()}")
 
+    def visualization(self):
+        print("Enter your choice::-")
+        print("--------------------")
+        print(" 1. Bar chart")
+        print(" 2. Line Graph")
+        print(" 3. Pie Chart")
+        print(" 4. Heatmap")
+        ch = input("Enter your choice : ")
+        sns.set_theme(style="whitegrid")
+        match ch:
+            case "1":
+                plt.figure(figsize=(10, 8), dpi=120)
+                sns.barplot(
+                    data=self.__data,
+                    x="Activity Type",
+                    y="Duration (Minutes)",
+                    hue="Activity Type",
+                )
+                plt.title("Total Duration by Activity", fontsize=14)
+                plt.xlabel("Activity", fontsize=12)
+                plt.ylabel("Duration", fontsize=12)
+                plt.xticks(rotation=90)
+                plt.tight_layout()
+                plt.savefig("plot\\fitness_bar.png")
+                print("Graph saved as fitness_plot.png")
+                plt.show()
+            case "2":
+                plt.figure(figsize=(10, 8), dpi=120)
+                sns.lineplot(
+                    data=self.__data,
+                    x="Date",
+                    y="Calories Burned",
+                    marker="o",
+                    linewidth=2,
+                )
+                plt.title("Calories Burned Over Time", fontsize=14)
+                plt.xlabel("Date", fontsize=12)
+                plt.ylabel("Calories Burned", fontsize=12)
+                plt.xticks(rotation=90)
+                plt.tight_layout()
+                plt.savefig(
+                    "plot\\fitness_line.png",
+                )
+                print("Line graph saved as fitness_line.png")
+                plt.show()
+            case "3":
+                activity_counts = self.__data["Activity Type"].value_counts()
+                plt.figure(figsize=(8, 8))
+                plt.pie(
+                    activity_counts.values.tolist(),
+                    labels=activity_counts.index.tolist(),
+                    autopct="%1.1f%%",
+                    startangle=90,
+                    wedgeprops={"linewidth": 1},
+                )
+                plt.title("Activity Share by Percentage", fontsize=14)
+                plt.axis("equal")
+                plt.tight_layout()
+                plt.savefig("plot\\fitness_pie.png")
+                print("Pie chart saved as fitness_pie.png")
+                plt.show()
+            case "4":
+                numeric_data = self.__data[
+                    ["Duration (Minutes)", "Calories Burned"]
+                ].corr()
+                plt.figure(figsize=(8, 8))
+                sns.heatmap(numeric_data, annot=True, cmap="coolwarm", fmt=".2f")
+                plt.title("Correlation Heatmap", fontsize=14)
+                plt.tight_layout()
+                plt.savefig("plot\\fitness_heatmap.png")
+                print("Heatmap saved as fitness_heatmap.png")
+                plt.show()
+
     def __del__(self):
         del self.__data
         print("Thank you for using Fitness Tracker.")
@@ -156,7 +238,7 @@ def main():
             case "5":
                 fitness_tracker.generate_report()
             case "6":
-                pass
+                fitness_tracker.visualization()
             case "7":
                 del fitness_tracker
                 return
