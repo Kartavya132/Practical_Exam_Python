@@ -84,6 +84,26 @@ class FitnessTracker:
         else:
             print("Invalid Choice")
 
+    def generate_report(self):
+
+        durations = np.array(self.__data["Duration (Minutes)"], dtype=float)
+        calories = np.array(self.__data["Calories Burned"], dtype=float)
+
+        print("\nFitness Report")
+        print("--------------")
+        print(f"Total activities: {len(self.__data)}")
+        print(f"Total unique activities: {self.__data['Activity Type'].nunique()}")
+        print(f"Total duration: {np.sum(durations):.0f} minutes")
+        print(f"Total calories burned: {np.sum(calories):.0f}")
+        print(f"Average duration: {np.mean(durations):.1f} minutes")
+        print(f"Average calories: {np.mean(calories):.1f}")
+
+        if len(calories) > 1:
+            changes = ((calories[1:] - calories[:-1]) / calories[:-1]) * 100
+            print(f"Average improvement: {changes.mean():.2f}%")
+
+        print(f"Data summary:\n{self.__data.describe()}")
+
     def __del__(self):
         del self.__data
         print("Thank you for using Fitness Tracker.")
@@ -134,7 +154,7 @@ def main():
             case "4":
                 fitness_tracker.filteration()
             case "5":
-                pass
+                fitness_tracker.generate_report()
             case "6":
                 pass
             case "7":
