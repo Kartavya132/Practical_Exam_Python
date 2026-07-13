@@ -14,6 +14,8 @@ Track it. Analyze it. Visualize it. Repeat. 🔁
 
 Every activity — a run, a yoga session, a swim — gets stored with its **date, duration, and calories burned**, building a growing dataset of your fitness journey over time. 📅✨
 
+Video :- <a href="https://drive.google.com/file/d/1o7X8ZYK56-nACeL9v6-0eYqV-geXLmKY/view?usp=sharing">Video of project</a>
+
 Under the hood:
 - 🐼 **Pandas** — stores and manipulates your activity data
 - 🔢 **NumPy** — powers the number-crunching
